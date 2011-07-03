@@ -1,0 +1,16 @@
+TROLLCRAFT
+
+This is a small "game" that throws the player into a fake minecraft environment with scary stuff and things.
+It is being developed by CounterPillow to prank one of his friends, who believes that Herobrine is real.
+
+TrollCraft uses ZauberCraft written by Noobody. (noobody.org)
+
+Due to copyright restrictions, I had to leave the resources away. The following stuff is missing:
+terrain.png - The minecraft terrain.png, converted to Black & White Image with the water tiles colored red
+ambient.ogg - Wind sound which is being looped. I converted a soundfile of Left4Dead2
+
+All code is being released under the terms and conditions of the zlib license, if not stated otherwise in the file itself
+or in any other file or text written by the author.
+
+Please note that this is still under heavy developement, and you are using it on your own risk. I can not be held liable
+for any damages that may occur directly or indirectly by executing this software.
