@@ -14,3 +14,24 @@ or in any other file or text written by the author.
 
 Please note that this is still under heavy developement, and you are using it on your own risk. I can not be held liable
 for any damages that may occur directly or indirectly by executing this software.
+
+------------------
+BUILD INSTRUCTIONS
+------------------
+
+1. Get BlitzMax (www.blitzbasic.com) and MinGW on Windows
+2. Open ZauberCraft.bmx
+3. Select in "Build Options" "Threaded", "GUI App" and "Quick Build"
+4. Press F5
+
+-----------------
+GAME INSTRUCTIONS
+-----------------
+
+WASD - Move
+Mouse - Look around
+Space/Ctrl - Move Up/Down
+L - Activate buggy collisions which don't work and output Chunk location to console
+
+Depending on your CPU Speed, it may take a few seconds to generate the terrain. If you can't see it, try to move around a bit,
+it's very foggy.
