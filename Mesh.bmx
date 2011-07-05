@@ -236,13 +236,13 @@ Type TMesh Extends TEntity
 	
 	Method LoadOBJ(file:String)
 		Local fstream:TStream = ReadFile(file)
-		Local Op:TOBJOperation
-		
 		Local Parser:TOBJParser = New TOBJParser
-		Parser.DestMesh = Self
-		Parser.ParseFile(fstream:TStream)
 		
+		Parser.DestMesh = Self
+		
+		Parser.ParseFile(fstream:TStream)
 		Parser.BuildMesh()
+		
 		CloseFile(fstream)
 	End Method
 End Type

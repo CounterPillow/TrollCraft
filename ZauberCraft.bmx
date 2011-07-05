@@ -56,6 +56,9 @@ Local Timer:TTimer = CreateTimer( 60 )
 
 Init()
 
+Local OBJTest:TMesh = TMesh.Create()
+OBJTest.LoadOBJ("cube.obj")
+
 While Not ( KeyHit( KEY_ESCAPE ) Or AppTerminate() )
 
 	TRenderer.RenderWorld()

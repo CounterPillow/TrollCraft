@@ -14,10 +14,10 @@ Type TOBJParam
 	End Method
 End Type
 
-Type TOBJFace
-	Field v:TOBJOperation
-	Field vn:TOBJOperation
-	Field vt:TOBJOperation
+Type TOBJFace	'Using TOBJParam doesn't make sense because f always has 3 space separated parameters
+	Field v:TOBJOperation[3]
+	Field vn:TOBJOperation[3]
+	Field vt:TOBJOperation[3]
 End Type
 
 Type TOBJParser
@@ -46,7 +46,7 @@ Type TOBJParser
 		Next
 	End Method
 	
-	Method ParseFaces(in:String)
+	Method ParseFaces:TOBJOperation(in:String)
 		Rem
 		Now this needs a little explanation.
 		Faces can be one of the following formats:
@@ -55,23 +55,35 @@ Type TOBJParser
 		f v/vt/vn v/vt/vn v/vt/vn
 		f v//vn v//vn v//vn
 		EndRem
+		'Someone smarter would have generalized the parameter parsing, but I'm not that smart.
+		Local SpaceLoc:Int
+		Local SpaceLoc2:Int
+		Local Param:String
+		Local Face:TOBJFace = New TOBJFace
+		SpaceLoc = Instr(in, " ")
+		SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
 		
+		While SpaceLoc <> 0
+			
+			SpaceLoc = SpaceLoc2
+			SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
+		Wend
 	EndMethod
 	
 	Method ParseVertParams:TOBJOperation(in:String)
-		Local spaceloc:Int
-		Local spaceloc2:Int
+		Local SpaceLoc:Int
+		Local SpaceLoc2:Int
 		Local Op:TOBJOperation = New TOBJOperation
-		spaceloc = Instr(in, " ")
-		spaceloc2 = Instr(in, " ", spaceloc + 1)
+		SpaceLoc = Instr(in, " ")
+		SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
 		
-		While spaceloc2 <> 0
+		While SpaceLoc2 <> 0
 			Local Param:TOBJParam = New TOBJParam
-			Param.Content = Mid(in, spaceloc + 1, spaceloc2 - spaceloc)
+			Param.Content = Mid(in, SpaceLoc + 1, SpaceLoc2 - SpaceLoc)
 			Op.Parameters.AddLast(Param:TOBJParam)
 			
-			spaceloc = spaceloc2
-			spaceloc2 = Instr(in, " ", spaceloc + 1)
+			SpaceLoc = SpaceLoc2
+			SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
 		Wend
 		Return Op:TOBJOperation
 	End Method
@@ -84,16 +96,15 @@ Type TOBJParser
 			inop = Left(inline,Instr(inline, " ") - 1)
 			Select inop
 				Case "v", "vn", "f"
-					DebugLog("+|" + inop)
+					DebugLog("+|" + inop)	'I like pointless debuglog entries.
 					Select inop
 						Case "v"
 							Vertices.AddLast(ParseVertParams(inline))
 						Case "vn"
 							VerticesNormals.AddLast(ParseVertParams(inline))
 						Case "f"
-
+							Faces.AddLast(ParseFaces(inline))
 					End Select
-					
 				Default
 					DebugLog("!|Unknown Operation: " + inop)
 			EndSelect
