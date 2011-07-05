@@ -1,6 +1,4 @@
-
 Type TOBJOperation
-	Field Operation:String
 	Field Parameters:TList
 	
 	Method New()
@@ -33,29 +31,38 @@ Type TOBJParam
 End Type
 
 Type TOBJParser
-	Field Operations:TList
+	Field Vertices:TList
+	Field VerticesNormals:TList
+	Field Faces:TList
 	Field DestMesh:TMesh
 	
 	Method New()
-		Operations:TList = New TList
+		Vertices:TList = New TList
+		VerticesNormals:TList = New TList
+		Faces:TList = New TList
 	End Method
 	
 	Method BuildMesh()
 		Local Op:TOBJOperation
+		Local VNOp:TOBJOperation	'VerticesNormals
+		
 		If DestMesh = Null
 			DestMesh:TMesh = New TMesh
-			For Op:TOBJOperation = EachIn Operations
-				Select Op.Operation
-					Case "v"
-					
-					Case "vn"
-					
-					Case "f"
-					
-					Default
-						DebugLog("!|Unknown Operation '" + Op.Operation + "' couldn't be processed!")
-				End Select
-			Next
+			DestMesh.Init()
 		EndIf
+		VNOp = TOBJOperation(VerticesNormals.FirstLink().Value())
+		For Op = EachIn Vertices
+			DestMesh.VBO.DataPointer = DestMesh.RenderVertexIntoBuffer( DestMesh.VBO.DataPointer, ..
+											TOBJParam(Op.Parameters.FirstLink().Value()).ToFloat(), ..
+											TOBJParam(Op.Parameters.FirstLink().NextLink().Value()).ToFloat(), ..
+											TOBJParam(Op.Parameters.FirstLink().NextLink().NextLink().Value()).ToFloat(), ..
+											TOBJParam(VNOp.Parameters.FirstLink().Value()).ToFloat(), ..
+											TOBJParam(VNOp.Parameters.FirstLink().NextLink().Value()).ToFloat(), ..
+											TOBJParam(VNOp.Parameters.FirstLink().NextLink().NextLink().Value()).ToFloat())
+			VNOp = TOBJOperation(VerticesNormals.FindLink(VNOp).NextLink().Value())
+		Next
+		For Op = EachIn Faces
+			
+		Next
 	End Method
 End Type

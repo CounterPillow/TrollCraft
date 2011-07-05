@@ -250,13 +250,22 @@ Type TMesh Extends TEntity
 				Case "v", "vn", "f"
 					DebugLog("+|" + inop)
 					Op:TOBJOperation = New TOBJOperation
-					Parser.Operations.AddLast(Op)
-					Op.Operation = inop
-					Op.ParseParams(inline)
+					Select inop
+						Case "v"
+							Parser.Vertices.AddLast(Op)
+							Op.ParseParams(inline)
+						Case "vn"
+							Parser.VerticesNormals.AddLast(Op)
+							Op.ParseParams(inline)
+						Case "f"
+							Parser.Faces.AddLast(Op)
+					End Select
+					
 				Default
 					DebugLog("!|Unknown Operation: " + inop)
 			EndSelect
 		Wend
+		Parser.BuildMesh()
 		CloseFile(fstream)
 	End Method
 End Type
