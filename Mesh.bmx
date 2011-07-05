@@ -236,35 +236,12 @@ Type TMesh Extends TEntity
 	
 	Method LoadOBJ(file:String)
 		Local fstream:TStream = ReadFile(file)
-		Local inline:String
 		Local Op:TOBJOperation
-		Local inop:String
 		
 		Local Parser:TOBJParser = New TOBJParser
 		Parser.DestMesh = Self
+		Parser.ParseFile(fstream:TStream)
 		
-		While Not Eof(fstream)
-			inline = ReadLine(fstream)
-			inop = Left(inline,Instr(inline, " ") - 1)
-			Select inop
-				Case "v", "vn", "f"
-					DebugLog("+|" + inop)
-					Op:TOBJOperation = New TOBJOperation
-					Select inop
-						Case "v"
-							Parser.Vertices.AddLast(Op)
-							Op.ParseParams(inline)
-						Case "vn"
-							Parser.VerticesNormals.AddLast(Op)
-							Op.ParseParams(inline)
-						Case "f"
-							Parser.Faces.AddLast(Op)
-					End Select
-					
-				Default
-					DebugLog("!|Unknown Operation: " + inop)
-			EndSelect
-		Wend
 		Parser.BuildMesh()
 		CloseFile(fstream)
 	End Method
