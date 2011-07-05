@@ -1,10 +1,4 @@
-Type TBox
-	Field W:Float	'X
-	Field H:Float	'Y
-	Field D:Float	'Z
-	
-	Field Parent:TEntity
-	
+Type TBox Extends TEntity
 	Field Collisions:TCollision[]
 	
 	Method GetCurrentChunk:TChunk()
@@ -19,8 +13,12 @@ Type TBox
 	End Method
 	
 	Method UpdateCollisions()
+		Local W:Float = Scaling.X
+		Local H:Float = Scaling.Y
+		Local D:Float = Scaling.Z
 		Local Chunk:TChunk = GetCurrentChunk()
 		Local RelPosition:TVector4 = Vec3(Parent.Position.X - Chunk.Position.X, Parent.Position.Y - Chunk.Position.Y, Parent.Position.Z - Chunk.Position.Z)
+		
 		If Chunk.VoxelData[Int(RelPosition.X), Int(RelPosition.Y - H / 2) - 1.0, Int(RelPosition.Z)] <> BLOCK_AIR		'BOTTOM
 			Collisions[0] = New TCollision
 			Collisions[0].Material = Chunk.VoxelData[Int(RelPosition.X), Int(RelPosition.Y - H / 2) - 1.0, Int(RelPosition.Z)]

@@ -1,3 +1,8 @@
+Rem
+Title: Wavefront OBJ Parser/Loader
+Description: Parses and builds Wavefront Object files according to http://www.martinreddy.net/gfx/3d/OBJ.spec
+EndRem
+
 Type TOBJOperation
 	Field Parameters:TList
 	
