@@ -63,16 +63,38 @@ Type TOBJParser
 		'Someone smarter would have generalized the parameter parsing, but I'm not that smart.
 		Local SpaceLoc:Int
 		Local SpaceLoc2:Int
-		Local Param:String
+		Local SlashLoc:Int
+		Local SlashLoc2:Int
+		Local Param:String[3]
+		Local FaceParam:String[3,3]
 		Local Face:TOBJFace = New TOBJFace
+		Local i:Int
+		Local n:Int
 		SpaceLoc = Instr(in, " ")
 		SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
 		
-		While SpaceLoc <> 0
+		'Parse out the space separated parameters
+		For i = 0 Until SpaceLoc = 0
+			If i > 2
+				DebugLog("!|Error in ParseFaces: Number of Parameters is greater than 3")
+				Exit
+			EndIf
+			Param[i] = Mid(in, SpaceLoc + 1, SpaceLoc2 - SpaceLoc)
 			
 			SpaceLoc = SpaceLoc2
 			SpaceLoc2 = Instr(in, " ", SpaceLoc + 1)
-		Wend
+		Next
+		
+		For n = 0 To Param.Length - 1
+			SlashLoc = Instr(Param[n], "/")
+			SlashLoc2 = Instr(Param[n], "/", SlashLoc + 1)
+			For i = 0 Until SlashLoc = 0
+				FaceParam[n,i] = Mid(in, SlashLoc + 1, SlashLoc2 - SlashLoc)
+				SlashLoc = SlashLoc2
+				SlashLoc2 = Instr(Param[n], "/", SlashLoc + 1)
+			Next
+		Next
+		
 	EndMethod
 	
 	Method ParseVertParams:TOBJOperation(in:String)
